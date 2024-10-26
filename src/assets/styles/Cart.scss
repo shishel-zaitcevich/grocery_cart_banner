@@ -11,7 +11,7 @@
 
   .cart-items {
     position: absolute;
-    top: 30px;
+    top: 35px;
     left: 67px;
     width: 187px;
     max-height: 147px;
@@ -30,7 +30,6 @@
       transition: transform 0.3s ease;
       margin-right: -23px;
       z-index: -1;
-
       &.enlarged {
         transform: scale(1.1);
       }
