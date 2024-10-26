@@ -20,12 +20,14 @@ const Shelf: React.FC = () => {
   const handleTouchStart = (event: React.TouchEvent, productSrc: string) => {
     setDraggedProduct(productSrc);
 
+    // Отключаем прокрутку страницы при начале перетаскивания
+    document.body.style.overflow = 'hidden';
+
     const touch = event.touches[0];
     const productElement = (event.target as HTMLElement).closest(
       '.product'
     ) as HTMLElement;
     if (productElement) {
-      // Создаем клон элемента
       const clone = productElement.cloneNode(true) as HTMLDivElement;
       clone.style.position = 'fixed';
       clone.style.pointerEvents = 'none';
@@ -46,7 +48,6 @@ const Shelf: React.FC = () => {
     const cartElement = document.querySelector('.cart-container');
 
     if (cloneElement) {
-      // Обновляем позицию клона
       cloneElement.style.left = `${touch.clientX - cloneElement.offsetWidth / 2}px`;
       cloneElement.style.top = `${touch.clientY - cloneElement.offsetHeight / 2}px`;
     }
@@ -76,7 +77,9 @@ const Shelf: React.FC = () => {
     setDraggedProduct(null);
     cartElement?.classList.remove('hover');
 
-    // Удаляем клон
+    // Восстанавливаем прокрутку страницы после завершения перетаскивания
+    document.body.style.overflow = '';
+
     if (cloneElement) {
       cloneElement.remove();
       setCloneElement(null);
@@ -94,9 +97,9 @@ const Shelf: React.FC = () => {
         onDragStart={(event) =>
           !product.hidden && handleDragStart(event, product.src)
         }
-        onTouchStart={(event) => handleTouchStart(event, product.src)} // Начало тача
-        onTouchMove={handleTouchMove} // Перемещение тача
-        onTouchEnd={handleTouchEnd} // Завершение тача
+        onTouchStart={(event) => handleTouchStart(event, product.src)}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         style={{ visibility: product.hidden ? 'hidden' : 'visible' }}
       >
         <img src={product.src} alt="product" />
